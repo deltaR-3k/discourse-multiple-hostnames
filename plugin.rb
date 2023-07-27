@@ -1,34 +1,26 @@
 # name: discourse-multiple-hostnames
 # about: Allow multiple hostnames for your forum
 # version: 1.0
-# authors: michael@discoursehosting.com
-# url: https://github.com/discoursehosting/discourse-multiple-hostnames
+# authors: xjtu-men
+# url: https://github.com/xjtu-men/discourse-multiple-hostnames
 
 after_initialize do
 
-  module ::OverrideEnforceHostname
+  class ::Middleware::EnforceHostname
     def call(env)
-
       hostname = env[Rack::Request::HTTP_X_FORWARDED_HOST].presence || env[Rack::HTTP_HOST]
+
       env[Rack::Request::HTTP_X_FORWARDED_HOST] = nil
 
-      set_hostname = Discourse.current_hostname
-      if Discourse.current_hostname != hostname
-        allowed_names = SiteSetting.extra_hostnames.split('|')
-        allowed_names.each do |name|
-          if name == hostname
-            set_hostname = name
-            break
-          end
-        end
+      case hostname
+      when 'xjtu.men', 'xjtu.love', 'xjtu.win', 'xjtu.live'
+        env[Rack::HTTP_HOST] = hostname
+      else
+        env[Rack::HTTP_HOST] = 'xjtu.live'
       end
-      env[Rack::HTTP_HOST] = set_hostname
+
       @app.call(env)
     end
-  end
-
-  class Middleware::EnforceHostname
-    prepend OverrideEnforceHostname
   end
 
 end

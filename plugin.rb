@@ -8,16 +8,17 @@ after_initialize do
 
   class ::Middleware::EnforceHostname
     def call(env)
-      hostname = env[Rack::Request::HTTP_X_FORWARDED_HOST].presence || env[Rack::HTTP_HOST]
-
+      cur_hostname = env[Rack::Request::HTTP_X_FORWARDED_HOST].presence || env[Rack::HTTP_HOST]
       env[Rack::Request::HTTP_X_FORWARDED_HOST] = nil
 
-      case hostname
-      when 'xjtu.men', 'xjtu.love', 'xjtu.win', 'xjtu.live'
-        env[Rack::HTTP_HOST] = hostname
-      else
-        env[Rack::HTTP_HOST] = 'xjtu.live'
+      use_hostname = SiteSetting.canonical_hostname
+      SiteSetting.extra_hostnames.split('|').each do |name|
+        if name == cur_hostname
+          use_hostname = name
+          break
+        end
       end
+      env[Rack::HTTP_HOST] = use_hostname
 
       @app.call(env)
     end

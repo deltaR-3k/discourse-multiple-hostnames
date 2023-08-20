@@ -1,3 +1,4 @@
 en:
   site_settings:
-    extra_hostnames: "Allow these hostnames to be used next to the canonical hostname."
+    extra_hostnames: "Allow these hostnames to be used next to the canonical hostname, separated by |"
+    canonical_hostname: "If none of the above matches, the default name, should be the same as in app.yml"

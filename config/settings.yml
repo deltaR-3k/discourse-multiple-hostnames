@@ -2,6 +2,8 @@ plugins:
   extra_hostnames:
     type: list
     client: false
-    default: ""
-    allow_any: true
+    default: "xjtu.men|xjtu.love|xjtu.win|xjtu.live|cf.xjtu.live"
+  canonical_hostname:
+    client: false
+    default: "xjtu.live"
 

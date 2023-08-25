@@ -2,8 +2,8 @@ plugins:
   extra_hostnames:
     type: list
     client: false
-    default: "xjtu.men|xjtu.love|xjtu.win|xjtu.live|cf.xjtu.live"
+    default: "npuer.life|ipv4.npuer.life"
   canonical_hostname:
     client: false
-    default: "xjtu.live"
+    default: "npuer.life"
 
